@@ -5,8 +5,8 @@ from wxmsg import send_wx
 # -----------------------------
 # 配置账号（优先使用环境变量）
 # -----------------------------
-USERNAME = os.getenv("TEXO_USER") or "378600950@qq.com"
-PASSWORD = os.getenv("TEXO_PASS") or "cattle3213505"
+USERNAME = os.getenv("TEXO_USER") or ""
+PASSWORD = os.getenv("TEXO_PASS") or ""
 
 # -----------------------------
 # 订阅续费配置
@@ -155,14 +155,14 @@ def notify(msg):
         send_wx(msg, WX_CORPID, WX_CORPSECRET, WX_AGENTID)
 
 if remaining < LOW_THRESHOLD:
-    notify(f"流量低于阈值，开始自动续费流程...\n剩余流量: {bytes_to_readable(remaining)}")
+    notify(f"[len]流量低于阈值，开始自动续费流程...\n剩余流量: {bytes_to_readable(remaining)}")
     trade_no = create_order(auth_data, PLAN_ID, PERIOD)
     if trade_no:
         if pay_order(auth_data, trade_no):
-            notify(f"订单 {trade_no} 创建并支付成功")
+            notify(f"[len]订单 {trade_no} 创建并支付成功")
         else:
-            notify(f"订单 {trade_no} 创建失败或支付失败")
+            notify(f"[len]订单 {trade_no} 创建失败或支付失败")
     else:
-        notify("自动续费失败：订单创建失败")
+        notify("[len]自动续费失败：订单创建失败")
 else:
-    notify(f"流量充足，无需续费\n剩余流量: {bytes_to_readable(remaining)}")
+    notify(f"[len]流量充足，无需续费\n剩余流量: {bytes_to_readable(remaining)}")
